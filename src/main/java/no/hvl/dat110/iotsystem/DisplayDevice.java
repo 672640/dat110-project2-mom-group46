@@ -26,9 +26,28 @@ public class DisplayDevice {
 		
 		// TODO - END
 		
+		Client client = new Client("display", "localhost", 8080);
+		
+		client.connect();
+		
+		client.createTopic("temperature");
+		
+		client.subscribe("temperature");
+		
+		for(int i = 0; i < COUNT; i++) {
+			PublishMsg msg = (PublishMsg) client.receive();
+			System.out.println("Received: " + msg.getMessage());
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		client.unsubscribe("temperature");
+		
+		client.disconnect();
+		
 		System.out.println("Display stopping ... ");
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
 	}
 }
